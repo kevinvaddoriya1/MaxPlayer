@@ -39,6 +39,11 @@
             android:layout_height="wrap_content"
             android:textColor="?android:textColorPrimary"
             android:text="@string/app_name"
+            android:layout_below="@+id/logo"
+            android:fontFamily="@font/semibold"
+            android:layout_marginTop="18dp"
+            android:layout_centerHorizontal="true"
+            android:textSize="25dp"
 
             />
 </RelativeLayout>
