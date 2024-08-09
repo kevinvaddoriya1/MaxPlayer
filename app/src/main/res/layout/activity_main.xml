@@ -43,7 +43,5 @@
             android:layout_below="@+id/logo"
             android:fontFamily="@font/semibold"
             android:layout_centerHorizontal="true"
-            android:textSize="25dp"
-
-            />
+            android:textSize="25dp"/>
 </RelativeLayout>

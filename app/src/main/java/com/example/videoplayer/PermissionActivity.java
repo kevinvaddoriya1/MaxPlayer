@@ -3,6 +3,7 @@ package com.example.videoplayer;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Build;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.karumi.dexter.Dexter;
@@ -18,10 +19,21 @@ import java.util.List;
 
 public class PermissionActivity extends AppCompatActivity {
 
+    private TextView tv_permission_title;
+    private TextView tv_permission_description;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permission);
+
+        tv_permission_title = findViewById(R.id.tv_permission_title);
+        tv_permission_description = findViewById(R.id.tv_permission_description);
+
+        tv_permission_title.setText(String.format(getString(R.string.strPermissionTitle),getString(R.string.app_name)));
+        tv_permission_description.setText(String.format(getString(R.string.strPermissionDesc2),getString(R.string.app_name)));
+    }
+    public void checkPermission(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Dexter.withContext(this).withPermission(Manifest.permission.READ_MEDIA_VIDEO)
                     .withListener(new PermissionListener() {
