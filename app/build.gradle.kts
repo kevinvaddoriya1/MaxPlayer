@@ -29,6 +29,7 @@ android {
 }
 
 dependencies {
+    implementation("com.karumi:dexter:6.2.3")
     implementation("com.github.fornewid:neumorphism:0.3.2")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")

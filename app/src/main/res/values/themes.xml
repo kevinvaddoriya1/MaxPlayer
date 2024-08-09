@@ -3,6 +3,8 @@
     <style name="Base.Theme.VideoPlayer" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowIsTranslucent">true</item>
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -22,5 +24,8 @@
         <item name="neumorph_cornerSizeTopRight">16dp</item>
         <item name="neumorph_cornerSizeBottomLeft">16dp</item>
         <item name="neumorph_cornerSizeBottomRight">16dp</item>
-    </style>x
+    </style>
+    <style name="Theme.RemoveSplashScreenTheme" parent="@style/Base.Theme.VideoPlayer">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>
