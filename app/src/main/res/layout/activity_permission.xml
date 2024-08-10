@@ -62,6 +62,7 @@
                 android:textSize="16sp"/>
 
         <Button
+                android:id="@+id/btn_allow_permission"
                 android:layout_width="wrap_content"
                 android:layout_height="54dp"
                 android:background="@drawable/bg_button"
