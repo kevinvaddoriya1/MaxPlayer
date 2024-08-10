@@ -33,6 +33,7 @@ public class PermissionActivity extends AppCompatActivity {
         super.onActivityResult(n, n2, intent);
         if (n == 10) {
             this.startActivity(new Intent(this, MainActivity.class));
+            MMKV.defaultMMKV().encode("is_PG", true);
             this.finish();
         }
     }
