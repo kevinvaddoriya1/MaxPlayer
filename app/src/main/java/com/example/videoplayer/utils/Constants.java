@@ -14,13 +14,13 @@ public class Constants {
     };
 
     public static final String[] slideTexts = {
-            "Intelligent Conversations",
-            "Visual Information Simplified",
-            "Voice-Activated Assistance"
+            "User-Friendly Interface",
+            "Explore All Videos",
+            "Picture-in-Picture Mode"
     };
     public static final String[] subtitle = {
-            "Engage with our AI chat for personalized assistance and seamless interaction.",
-            "Turn images into text summaries effortlessly, unlocking a new dimension of understanding through our AI-powered feature.",
-            "Simply speak your queries – our AI is ready to respond, making your experience hands-free and efficient."
+            "Navigate with ease and enjoy a smooth, user-friendly experience.",
+            "Explore and manage your personal video library with clean UI.",
+            "Keep your videos playing while you use other apps with Picture-in-Picture mode."
     };
 }
