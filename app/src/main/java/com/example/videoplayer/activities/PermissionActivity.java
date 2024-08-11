@@ -1,14 +1,11 @@
 package com.example.videoplayer.activities;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -21,8 +18,6 @@ import androidx.core.content.ContextCompat;
 import com.example.videoplayer.R;
 import com.example.videoplayer.utils.Constants;
 import com.tencent.mmkv.MMKV;
-
-import java.util.Arrays;
 
 public class PermissionActivity extends AppCompatActivity {
 
@@ -87,7 +82,7 @@ public class PermissionActivity extends AppCompatActivity {
             MMKV mmkv = MMKV.defaultMMKV();
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 mmkv.encode(Constants.IS_PERMISSION_GRANTED, true);
-                startActivity(new Intent(PermissionActivity.this, MainActivity.class));
+                startActivity(new Intent(PermissionActivity.this, SplashActivity.class));
                 finish();
                 return;
             }
@@ -108,7 +103,7 @@ public class PermissionActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PERMISSION_SETTINGS) {
-            startActivity(new Intent(PermissionActivity.this, MainActivity.class));
+            startActivity(new Intent(PermissionActivity.this, SplashActivity.class));
             finish();
         }
     }

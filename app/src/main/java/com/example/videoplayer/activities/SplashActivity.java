@@ -1,6 +1,5 @@
 package com.example.videoplayer.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -9,22 +8,19 @@ import android.view.View;
 import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.example.videoplayer.R;
 import com.example.videoplayer.utils.Constants;
 import com.tencent.mmkv.MMKV;
 
-import java.util.Arrays;
-
-public class MainActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity {
 
     private String[] storagePermissions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_splash);
 
         MMKV mmkv = MMKV.defaultMMKV();
 
@@ -39,9 +35,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (!checkPermissions() && !mmkv.decodeBool(Constants.IS_PERMISSION_GRANTED, false)) {
-                    startActivity(new Intent(MainActivity.this, PermissionActivity.class));
+                    startActivity(new Intent(SplashActivity.this, PermissionActivity.class));
+                } else if (!mmkv.decodeBool(Constants.IS_ONBOARDING_SHOWED, false)) {
+                    startActivity(new Intent(SplashActivity.this, OnboardingActivity.class));
                 } else {
-                   startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
                 }
                 finish();
             }
@@ -50,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean checkPermissions() {
         for (String permission : storagePermissions) {
-            if (ContextCompat.checkSelfPermission(MainActivity.this, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(SplashActivity.this, permission) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
         }

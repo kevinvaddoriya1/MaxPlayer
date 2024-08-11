@@ -11,12 +11,32 @@
     </style>
 
     <style name="Theme.VideoPlayer" parent="Base.Theme.VideoPlayer"/>
-    <style name="CustomShapeAppearance">
+
+    <style name="CustomShapeNeumorphCard">
         <item name="neumorph_cornerFamily">rounded</item>
-        <item name="neumorph_cornerSize">32dp</item>
-        <item name="neumorph_cornerSizeTopLeft">16dp</item>
-        <item name="neumorph_cornerSizeTopRight">16dp</item>
-        <item name="neumorph_cornerSizeBottomLeft">16dp</item>
-        <item name="neumorph_cornerSizeBottomRight">16dp</item>
+        <item name="neumorph_cornerSizeTopLeft">18dp</item>
+        <item name="neumorph_cornerSizeTopRight">18dp</item>
+        <item name="neumorph_cornerSizeBottomLeft">18dp</item>
+        <item name="neumorph_cornerSizeBottomRight">18dp</item>
+        <item name="neumorph_shapeType">flat</item>
+        <item name="neumorph_lightSource">leftTop</item>
+        <item name="neumorph_inset">12dp</item>
+        <item name="neumorph_shadowElevation">6dp</item>
+        <item name="neumorph_shadowColorLight">@color/white</item>
+        <item name="neumorph_shadowColorDark">@color/shadowColorDark</item>
+    </style>
+
+    <style name="CustomShapeNeumorphButton">
+        <item name="neumorph_cornerFamily">rounded</item>
+        <item name="neumorph_cornerSizeTopLeft">8dp</item>
+        <item name="neumorph_cornerSizeTopRight">8dp</item>
+        <item name="neumorph_cornerSizeBottomLeft">8dp</item>
+        <item name="neumorph_cornerSizeBottomRight">8dp</item>
+        <item name="neumorph_shapeType">flat</item>
+        <item name="neumorph_lightSource">leftTop</item>
+        <item name="neumorph_inset">12dp</item>
+        <item name="neumorph_shadowElevation">6dp</item>
+        <item name="neumorph_shadowColorLight">@color/white</item>
+        <item name="neumorph_shadowColorDark">@color/shadowColorDark</item>
     </style>
 </resources>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/pagerlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_above="@+id/rlbottom"
+        android:weightSum="1">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.87"/>
+
+        <LinearLayout
+            android:id="@+id/indicatorLayout"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="18dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rlbottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="38dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/btnSkip"
+            android:layout_width="wrap_content"
+            android:layout_height="54dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="18dp"
+            android:paddingHorizontal="18dp"
+            android:gravity="center"
+            android:text="Skip"
+            android:textColor="?android:textColorPrimary"
+            android:layout_marginTop="18dp"
+            android:textSize="16sp"/>
+
+        <soup.neumorphism.NeumorphButton
+            android:id="@+id/btnStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="52dp"
+            android:layout_margin="8dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_button"
+            android:text="Start"
+            android:textAllCaps="false"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="17sp"
+            android:visibility="gone"
+            app:neumorph_backgroundColor="@color/colorPrimaryLight"
+            style="@style/Widget.Neumorph.Button"
+            app:neumorph_shapeAppearance="@style/CustomShapeNeumorphButton"/>
+
+
+        <soup.neumorphism.NeumorphButton
+            android:id="@+id/btnNext"
+            android:layout_margin="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="18dp"
+            android:text="Next"
+            android:textAllCaps="false"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="17sp"
+            app:neumorph_backgroundColor="@color/colorPrimaryLight"
+            style="@style/Widget.Neumorph.Button"
+            app:neumorph_shapeAppearance="@style/CustomShapeNeumorphButton"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
