@@ -15,6 +15,7 @@
     <application
             android:name=".BaseActivity"
             android:allowBackup="true"
+            android:hardwareAccelerated="true"
             android:dataExtractionRules="@xml/data_extraction_rules"
             android:fullBackupContent="@xml/backup_rules"
             android:icon="@mipmap/ic_launcher"
@@ -24,22 +25,19 @@
             android:theme="@style/Theme.VideoPlayer"
             tools:targetApi="31">
         <activity
-                android:name=".HomeActivity"
-                android:exported="false"/>
-        <activity
-                android:name=".PermissionActivity"
+                android:name=".activities.HomeActivity"
                 android:exported="false"
                 android:screenOrientation="portrait"/>
         <activity
-                android:name=".MainActivity"
+                android:name=".activities.PermissionActivity"
+                android:exported="false"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".activities.MainActivity"
                 android:exported="true"
-                android:launchMode="singleInstance"
-                android:noHistory="true"
-                android:screenOrientation="portrait"
-                android:theme="@style/Theme.RemoveSplashScreenTheme">
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>

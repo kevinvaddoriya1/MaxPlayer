@@ -1,7 +1,8 @@
-package com.example.videoplayer;
+package com.example.videoplayer.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.example.videoplayer.R;
 
 public class HomeActivity extends AppCompatActivity {
 
