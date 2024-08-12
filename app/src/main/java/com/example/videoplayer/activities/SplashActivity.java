@@ -36,7 +36,10 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 if (!checkPermissions() && !mmkv.decodeBool(Constants.IS_PERMISSION_GRANTED, false)) {
                     startActivity(new Intent(SplashActivity.this, PermissionActivity.class));
-                } else if (!mmkv.decodeBool(Constants.IS_ONBOARDING_SHOWED, false)) {
+                    finish();
+                    return;
+                }
+                if (!mmkv.decodeBool(Constants.IS_ONBOARDING_SHOWED, false)) {
                     startActivity(new Intent(SplashActivity.this, OnboardingActivity.class));
                 } else {
                     startActivity(new Intent(SplashActivity.this, HomeActivity.class));
@@ -47,10 +50,16 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private boolean checkPermissions() {
+        MMKV mmkv = MMKV.defaultMMKV();
         for (String permission : storagePermissions) {
             if (ContextCompat.checkSelfPermission(SplashActivity.this, permission) != PackageManager.PERMISSION_GRANTED) {
+                mmkv.encode(Constants.IS_PERMISSION_GRANTED,false);
                 return false;
             }
+        }
+        if (!mmkv.decodeBool(Constants.IS_PERMISSION_GRANTED, false)) {
+            mmkv.encode(Constants.IS_PERMISSION_GRANTED,true);
+            return true;
         }
         return true;
     }
