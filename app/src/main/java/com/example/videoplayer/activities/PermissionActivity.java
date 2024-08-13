@@ -35,7 +35,7 @@ public class PermissionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_permission);
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.windowBackground));
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
