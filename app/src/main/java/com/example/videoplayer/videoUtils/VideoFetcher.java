@@ -1,0 +1,79 @@
+package com.example.videoplayer.videoUtils;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
+import com.example.videoplayer.models.VideoDetails;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class VideoFetcher {
+    // Singleton instance
+    private static VideoFetcher instance;
+
+    private VideoFetcher() {
+        // Private constructor to prevent instantiation
+    }
+
+    public static synchronized VideoFetcher getInstance() {
+        if (instance == null) {
+            instance = new VideoFetcher();
+        }
+        return instance;
+    }
+
+    // Fetch all videos with details
+    public List<VideoDetails> fetchAllVideos(Context context) {
+        List<VideoDetails> videoDetailsList = new ArrayList<>();
+        Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+
+        String[] projection = {
+                MediaStore.Video.Media.DISPLAY_NAME,
+                MediaStore.Video.Media.DATA,
+                MediaStore.Video.Media.SIZE,
+                MediaStore.Video.Media.DURATION,
+                MediaStore.Video.Media.DATE_MODIFIED,
+                MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
+                MediaStore.Video.Media.WIDTH,
+                MediaStore.Video.Media.HEIGHT,
+                MediaStore.Video.Media.DATE_ADDED
+        };
+
+        String sortOrder = MediaStore.Video.Media.DATE_ADDED + " DESC";
+
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, sortOrder);
+        if (cursor != null) {
+            int displayNameColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME);
+            int dataColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+            int sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE);
+            int durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION);
+            int dateModifiedColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED);
+            int folderNameColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME);
+            int widthColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.WIDTH);
+            int heightColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.HEIGHT);
+            int dateAddedColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            while (cursor.moveToNext()) {
+                String displayName = cursor.getString(displayNameColumn);
+                String path = cursor.getString(dataColumn);
+                long size = cursor.getLong(sizeColumn);
+                long duration = cursor.getLong(durationColumn);
+                String modifiedDate = sdf.format(new Date(cursor.getLong(dateModifiedColumn) * 1000L));
+                String folderName = cursor.getString(folderNameColumn);
+                String resolution = cursor.getInt(widthColumn) + "x" + cursor.getInt(heightColumn);
+                String dateAdded = sdf.format(new Date(cursor.getLong(dateAddedColumn) * 1000L));
+
+                VideoDetails videoDetails = new VideoDetails(displayName, path, size, duration, modifiedDate, folderName, resolution, dateAdded);
+                videoDetailsList.add(videoDetails);
+            }
+            cursor.close();
+        }
+        return videoDetailsList;
+    }
+}

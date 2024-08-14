@@ -17,6 +17,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/img_thumbnail"
             android:layout_width="110dp"
             android:layout_height="70dp"
             android:scaleType="centerCrop"
@@ -34,6 +35,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
@@ -42,12 +44,13 @@
             android:textSize="16sp"/>
 
         <TextView
+            android:id="@+id/tv_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:ellipsize="end"
             android:textColor="?android:textColorSecondary"
-            android:text="@string/app_name"/>
+            android:text="@string/videoSizeDuration"/>
 
     </LinearLayout>
 

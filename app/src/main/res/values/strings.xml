@@ -3,6 +3,7 @@
     <string name="strPermissionTitle">Welcome to %s</string>
     <string name="strPermissionDesc">Need Storage Permission</string>
     <string name="strPermissionDesc2">Allow %s to access to your videos!</string>
+    <string name="videoSizeDuration">%s | %s</string>
 
     <string name="totalVideos">Total Videos : %s</string>
     <string name="totalFolders">Total Folders : %s</string>
