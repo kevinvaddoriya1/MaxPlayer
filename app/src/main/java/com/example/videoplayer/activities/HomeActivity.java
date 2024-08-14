@@ -20,7 +20,7 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView tv_title;
+    private TextView tv_title,tv_total_video;
     private RecyclerView rv_videos;
     private VideoAdapter adapter;
     private List<VideoDetails> list = new ArrayList<>();
@@ -52,12 +52,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         adapter = new VideoAdapter(list);
         rv_videos.setAdapter(adapter);
+        tv_total_video.setText(String.format(getString(R.string.totalVideos),String.valueOf(list.size())));
 
     }
 
     private void initViews() {
         tv_title = findViewById(R.id.tv_title);
         rv_videos = findViewById(R.id.rv_videos);
+        tv_total_video = findViewById(R.id.tv_total_video);
     }
 
     @Override
