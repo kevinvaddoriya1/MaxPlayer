@@ -19,7 +19,7 @@ public class BaseActivity extends Application {
         super.onCreate();
         context = this;
         MMKV.initialize(this);
-        videoFetcher = new VideoFetcher();
+        videoFetcher = VideoFetcher.getInstance();
 
 //        FOLDERLIST = videoFetcher.fetchAllFolders(this);
     }

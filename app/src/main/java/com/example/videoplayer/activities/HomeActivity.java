@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
+import com.example.videoplayer.BaseActivity;
 import com.example.videoplayer.R;
 import com.example.videoplayer.fragments.AllVideoFragment;
 import com.example.videoplayer.fragments.FolderFragment;
@@ -37,6 +38,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        BaseActivity.getVideoFetcher().fetchAllFolders();
 
         configureSystemUI();
 
