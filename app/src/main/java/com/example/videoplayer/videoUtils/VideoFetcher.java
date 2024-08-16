@@ -4,12 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import com.example.videoplayer.models.FolderDetails;
 import com.example.videoplayer.models.VideoDetails;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class VideoFetcher {
     // Singleton instance
@@ -75,5 +74,37 @@ public class VideoFetcher {
             cursor.close();
         }
         return videoDetailsList;
+    }
+    public List<FolderDetails> fetchAllFolders(Context context) {
+        List<FolderDetails> folderDetailsList = new ArrayList<>();
+        Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+
+        String[] projection = {
+                MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
+                MediaStore.Video.Media._ID
+        };
+
+        String sortOrder = MediaStore.Video.Media.BUCKET_DISPLAY_NAME + " ASC";
+
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, sortOrder);
+        if (cursor != null) {
+            Map<String, Integer> folderMap = new HashMap<>();
+
+            int folderNameColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME);
+
+            while (cursor.moveToNext()) {
+                String folderName = cursor.getString(folderNameColumn);
+
+                // Increment video count for the folder
+                folderMap.put(folderName, folderMap.getOrDefault(folderName, 0) + 1);
+            }
+            cursor.close();
+
+            // Create FolderDetails objects and populate the list
+            for (Map.Entry<String, Integer> entry : folderMap.entrySet()) {
+                folderDetailsList.add(new FolderDetails(entry.getKey(), entry.getValue()));
+            }
+        }
+        return folderDetailsList;
     }
 }
