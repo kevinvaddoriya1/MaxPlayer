@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AllVideoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView rvVideos;
     private TextView tvTotalVideos;
@@ -31,12 +32,7 @@ public class AllVideoFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_all_video, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_all_video, container, false);
 
         refreshLayout = view.findViewById(R.id.refreshLayout);
         refreshLayout.setColorSchemeResources(R.color.colorPrimary);
@@ -44,8 +40,15 @@ public class AllVideoFragment extends Fragment implements SwipeRefreshLayout.OnR
         rvVideos = view.findViewById(R.id.rv_videos);
         tvTotalVideos = view.findViewById(R.id.tv_total_video);
 
-//        onRefresh();
+        onRefresh();
+
+        return view;
     }
+
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//    }
 
     @SuppressLint("NotifyDataSetChanged")
     private void showVideos() {

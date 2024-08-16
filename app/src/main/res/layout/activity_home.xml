@@ -45,11 +45,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewpagerTab"
+        <FrameLayout
+            android:id="@+id/container_frame"
             android:layout_width="match_parent"
-            android:layout_above="@+id/cardBottom"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_above="@+id/cardBottom"/>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardBottom"
@@ -57,6 +57,7 @@
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
             android:elevation="5dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -76,6 +77,7 @@
                         android:src="@drawable/ic_home"
                         android:layout_gravity="center"/>
                     <TextView
+                        android:id="@+id/tv_home"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Home"
@@ -95,7 +97,9 @@
                         android:layout_height="25dp"
                         android:src="@drawable/ic_foldertab"
                         android:layout_gravity="center"/>
+
                     <TextView
+                        android:id="@+id/tv_folder"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Folder"
@@ -116,14 +120,18 @@
                         android:layout_height="25dp"
                         android:src="@drawable/ic_setting"
                         android:layout_gravity="center"/>
+
                     <TextView
+                        android:id="@+id/tv_setting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Setting"
                         android:textColor="?android:textColorPrimary"/>
 
                 </LinearLayout>
+
             </LinearLayout>
+
         </androidx.cardview.widget.CardView>
 
     </RelativeLayout>

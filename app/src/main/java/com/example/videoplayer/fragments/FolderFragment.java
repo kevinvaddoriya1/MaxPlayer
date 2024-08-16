@@ -41,20 +41,20 @@ public class FolderFragment extends Fragment {
 
 //        videoList = BaseActivity.getFolder();
 
-        setupRecyclerView();
-
-        updateTotalVideoCount();
+//        setupRecyclerView();
+//
+//        updateTotalVideoCount();
 
     }
 
-    private void setupRecyclerView() {
-        rvVideos.setLayoutManager(new LinearLayoutManager(getContext()));
-//        videoAdapter = new FolderAdapter(videoList);
-        rvVideos.setAdapter(videoAdapter);
-    }
+//    private void setupRecyclerView() {
+//        rvVideos.setLayoutManager(new LinearLayoutManager(getContext()));
+////        videoAdapter = new FolderAdapter(videoList);
+//        rvVideos.setAdapter(videoAdapter);
+//    }
 
-    private void updateTotalVideoCount() {
-        String totalVideosText = String.format(getString(R.string.totalVideos),String.valueOf(videoList.size()));
-        tvTotalVideos.setText(totalVideosText);
-    }
+//    private void updateTotalVideoCount() {
+//        String totalVideosText = String.format(getString(R.string.totalVideos),String.valueOf(videoList.size()));
+//        tvTotalVideos.setText(totalVideosText);
+//    }
 }

@@ -9,24 +9,28 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
-
-import com.example.videoplayer.BaseActivity;
 import com.example.videoplayer.R;
-import com.example.videoplayer.models.VideoDetails;
-import com.example.videoplayer.utils.ViewPagerAdapter;
-import com.example.videoplayer.videoUtils.OnEventListener;
+import com.example.videoplayer.fragments.AllVideoFragment;
+import com.example.videoplayer.fragments.FolderFragment;
+import com.example.videoplayer.fragments.SettingsFragment;
 
-import java.util.List;
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
-public class HomeActivity extends AppCompatActivity {
+    private AllVideoFragment allVideoFragment = new AllVideoFragment();
+    private FolderFragment folderFragment = new FolderFragment();
+    private SettingsFragment settingsFragment = new SettingsFragment();
+    Fragment activeFragment = allVideoFragment;
 
     private TextView tvTitle;
     private ViewPager2 viewPager;
     private ImageView homeIcon, folderIcon, settingIcon;
+    private TextView tv_home, tv_folder, tv_setting;
     private LinearLayout homeLayout, folderLayout, settingLayout;
 
     @Override
@@ -40,7 +44,31 @@ public class HomeActivity extends AppCompatActivity {
 
         setCustomTitle();
 
-        setupViewPager();
+        homeLayout.setOnClickListener(this);
+        folderLayout.setOnClickListener(this);
+        settingLayout.setOnClickListener(this);
+
+        loadFragment(allVideoFragment);
+        updateTabIcons(0);
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(R.id.container_frame, allVideoFragment, "allVideoFragment");
+        ft.add(R.id.container_frame, folderFragment, "folderFragment").hide(folderFragment);
+        ft.add(R.id.container_frame, settingsFragment, "settingsFragment").hide(settingsFragment);
+        ft.commit();
+
+    }
+
+    public void loadFragment(Fragment fragment) {
+        if (fragment == activeFragment) return;
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.hide(activeFragment);
+        ft.show(fragment);
+        ft.commit();
+        activeFragment = fragment;
     }
 
     private void configureSystemUI() {
@@ -52,18 +80,15 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initViews() {
         tvTitle = findViewById(R.id.tv_title);
-        viewPager = findViewById(R.id.viewpagerTab);
         homeIcon = findViewById(R.id.home);
         folderIcon = findViewById(R.id.folder);
         settingIcon = findViewById(R.id.setting);
         homeLayout = findViewById(R.id.homell);
         folderLayout = findViewById(R.id.folderll);
         settingLayout = findViewById(R.id.settingll);
-
-        homeLayout.setOnClickListener(view -> viewPager.postDelayed(() -> viewPager.setCurrentItem(0, true), 100));
-        folderLayout.setOnClickListener(view -> viewPager.postDelayed(() -> viewPager.setCurrentItem(1, true), 100));
-        settingLayout.setOnClickListener(view -> viewPager.postDelayed(() -> viewPager.setCurrentItem(2, true), 100));
-
+        tv_home = findViewById(R.id.tv_home);
+        tv_folder = findViewById(R.id.tv_folder);
+        tv_setting = findViewById(R.id.tv_setting);
     }
 
     private void setCustomTitle() {
@@ -80,25 +105,34 @@ public class HomeActivity extends AppCompatActivity {
         tvTitle.setText(spannableString);
     }
 
-    private void setupViewPager() {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(this);
-        viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(2);
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                updateTabIcons(position);
-            }
-        });
-    }
-
     private void updateTabIcons(int position) {
         int selectedColor = getColor(R.color.colorPrimary);
-        int defaultColor = getColor(R.color.colorPrimaryText);
+        int defaultColor = getColor(R.color.colorSecondaryText);
 
         homeIcon.setColorFilter(position == 0 ? selectedColor : defaultColor);
+        tv_home.setTextColor(position == 0 ? selectedColor : defaultColor);
+
         folderIcon.setColorFilter(position == 1 ? selectedColor : defaultColor);
+        tv_folder.setTextColor(position == 1 ? selectedColor : defaultColor);
+
         settingIcon.setColorFilter(position == 2 ? selectedColor : defaultColor);
+        tv_setting.setTextColor(position == 2 ? selectedColor : defaultColor);
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == R.id.homell) {
+            updateTabIcons(0);
+            loadFragment(allVideoFragment);
+        }
+        if (id == R.id.folderll) {
+            updateTabIcons(1);
+            loadFragment(folderFragment);
+        }
+        if (id == R.id.settingll) {
+            updateTabIcons(2);
+            loadFragment(settingsFragment);
+        }
     }
 }
