@@ -68,4 +68,5 @@ public class FolderFragment extends Fragment implements SwipeRefreshLayout.OnRef
         String totalVideosText = String.format(getString(R.string.totalFolders), String.valueOf(list.size()));
         tv_total_folder.setText(totalVideosText);
     }
+
 }
