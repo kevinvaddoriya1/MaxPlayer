@@ -36,6 +36,7 @@ dependencies {
     implementation("com.airbnb.android:lottie:6.5.0")
     implementation("com.tencent:mmkv:1.3.9")
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.github.fornewid:neumorphism:0.3.2")
 
     implementation("androidx.appcompat:appcompat:1.7.0")

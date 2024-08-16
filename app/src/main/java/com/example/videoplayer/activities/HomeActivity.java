@@ -14,8 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.videoplayer.BaseActivity;
 import com.example.videoplayer.R;
+import com.example.videoplayer.models.VideoDetails;
 import com.example.videoplayer.utils.ViewPagerAdapter;
+import com.example.videoplayer.videoUtils.OnEventListener;
+
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 

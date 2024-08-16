@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import com.example.videoplayer.BaseActivity;
 import com.example.videoplayer.models.FolderDetails;
 import com.example.videoplayer.models.VideoDetails;
 
@@ -14,8 +15,8 @@ public class VideoFetcher {
     // Singleton instance
     private static VideoFetcher instance;
 
-    private VideoFetcher() {
-        // Private constructor to prevent instantiation
+    public VideoFetcher() {
+
     }
 
     public static synchronized VideoFetcher getInstance() {
@@ -26,7 +27,7 @@ public class VideoFetcher {
     }
 
     // Fetch all videos with details
-    public List<VideoDetails> fetchAllVideos(Context context) {
+    public void fetchAllVideos(OnEventListener<List<VideoDetails>> listener) {
         List<VideoDetails> videoDetailsList = new ArrayList<>();
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
 
@@ -44,7 +45,7 @@ public class VideoFetcher {
 
         String sortOrder = MediaStore.Video.Media.DATE_ADDED + " DESC";
 
-        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, sortOrder);
+        Cursor cursor = BaseActivity.getContext().getContentResolver().query(uri, projection, null, null, sortOrder);
         if (cursor != null) {
             int displayNameColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME);
             int dataColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
@@ -73,8 +74,10 @@ public class VideoFetcher {
             }
             cursor.close();
         }
-        return videoDetailsList;
+        listener.onSuccess(videoDetailsList);
     }
+
+
     public List<FolderDetails> fetchAllFolders(Context context) {
         List<FolderDetails> folderDetailsList = new ArrayList<>();
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;

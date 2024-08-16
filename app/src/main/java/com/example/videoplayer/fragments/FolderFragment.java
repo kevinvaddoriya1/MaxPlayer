@@ -39,7 +39,7 @@ public class FolderFragment extends Fragment {
         rvVideos = view.findViewById(R.id.rv_videos);
         tvTotalVideos = view.findViewById(R.id.tv_total_video);
 
-        videoList = BaseActivity.getFolder();
+//        videoList = BaseActivity.getFolder();
 
         setupRecyclerView();
 

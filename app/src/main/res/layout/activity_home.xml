@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".activities.HomeActivity">
 
@@ -45,14 +44,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpagerTab"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </androidx.viewpager2.widget.ViewPager2>
+            android:layout_above="@+id/cardBottom"
+            android:layout_height="match_parent"/>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardBottom"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
@@ -68,8 +68,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:layout_weight="1"
-                    >
+                    android:layout_weight="1">
                     <ImageView
                         android:id="@+id/home"
                         android:layout_width="25dp"
