@@ -1,6 +1,10 @@
 package com.example.videoplayer.models;
 
-public class VideoDetails {
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class VideoDetails implements Parcelable {
     private String displayName;
     private String path;
     private long size;
@@ -23,7 +27,48 @@ public class VideoDetails {
         this.dateAdded = dateAdded;
     }
 
-    // Getters
+    // Parcelable implementation
+    protected VideoDetails(Parcel in) {
+        displayName = in.readString();
+        path = in.readString();
+        size = in.readLong();
+        duration = in.readLong();
+        modifiedDate = in.readString();
+        folderName = in.readString();
+        resolution = in.readString();
+        dateAdded = in.readString();
+    }
+
+    public static final Creator<VideoDetails> CREATOR = new Creator<VideoDetails>() {
+        @Override
+        public VideoDetails createFromParcel(Parcel in) {
+            return new VideoDetails(in);
+        }
+
+        @Override
+        public VideoDetails[] newArray(int size) {
+            return new VideoDetails[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(displayName);
+        dest.writeString(path);
+        dest.writeLong(size);
+        dest.writeLong(duration);
+        dest.writeString(modifiedDate);
+        dest.writeString(folderName);
+        dest.writeString(resolution);
+        dest.writeString(dateAdded);
+    }
+
+    // Getters (same as before)
     public String getDisplayName() {
         return displayName;
     }
@@ -56,3 +101,4 @@ public class VideoDetails {
         return dateAdded;
     }
 }
+

@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.videoplayer.R;
+import com.example.videoplayer.models.FolderDetails;
 import com.example.videoplayer.models.VideoDetails;
 import com.example.videoplayer.utils.Utils;
 import org.jetbrains.annotations.NotNull;
@@ -21,9 +23,10 @@ import java.util.List;
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> {
 
     private List<VideoDetails> videoList;
-
-    public VideoAdapter(List<VideoDetails> videoList) {
+    private final AdapterItemClickListener<VideoDetails> listener;
+    public VideoAdapter(List<VideoDetails> videoList,AdapterItemClickListener<VideoDetails> listener) {
         this.videoList = videoList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -55,6 +58,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         String duration = Utils.timeConversion(data.getDuration());
         holder.tv_size.setText(String.format(str, duration, Formatter.formatFileSize(context, data.getSize())));
 
+        holder.videoitem_ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClicked(data,position);
+            }
+        });
+
     }
 
     @Override
@@ -64,8 +74,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView img_thumbnail;
+        ImageView img_thumbnail,img_more;
         TextView tv_name, tv_size;
+        LinearLayout videoitem_ll;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -73,6 +84,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
             img_thumbnail = itemView.findViewById(R.id.img_thumbnail);
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_size = itemView.findViewById(R.id.tv_size);
+            videoitem_ll = itemView.findViewById(R.id.videoitem_ll);
+            img_more = itemView.findViewById(R.id.btn_video_more);
 
         }
     }

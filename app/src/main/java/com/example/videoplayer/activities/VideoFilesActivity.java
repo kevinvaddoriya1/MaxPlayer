@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.videoplayer.BaseActivity;
 import com.example.videoplayer.R;
+import com.example.videoplayer.adapters.AdapterItemClickListener;
 import com.example.videoplayer.adapters.VideoAdapter;
 import com.example.videoplayer.models.VideoDetails;
 import com.example.videoplayer.videoUtils.OnEventListener;
@@ -21,7 +22,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VideoFilesActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class VideoFilesActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, AdapterItemClickListener<VideoDetails> {
 
     private String key;
     private SwipeRefreshLayout refreshLayout;
@@ -75,7 +76,7 @@ public class VideoFilesActivity extends AppCompatActivity implements SwipeRefres
             }
         });
 
-        videoAdapter = new VideoAdapter(videoList);
+        videoAdapter = new VideoAdapter(videoList,this);
         rvVideos.setLayoutManager(new LinearLayoutManager(this));
         rvVideos.setAdapter(videoAdapter);
         videoAdapter.notifyDataSetChanged();
@@ -85,5 +86,10 @@ public class VideoFilesActivity extends AppCompatActivity implements SwipeRefres
     public void onRefresh() {
         refreshLayout.setRefreshing(true);
         showVideos();
+    }
+
+    @Override
+    public void onClicked(VideoDetails data, int position) {
+
     }
 }

@@ -1,7 +1,9 @@
 package com.example.videoplayer.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +16,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.videoplayer.BaseActivity;
 import com.example.videoplayer.R;
+import com.example.videoplayer.activities.VideoPlayerActivity;
+import com.example.videoplayer.adapters.AdapterItemClickListener;
 import com.example.videoplayer.adapters.VideoAdapter;
 import com.example.videoplayer.models.VideoDetails;
 import com.example.videoplayer.videoUtils.OnEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllVideoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class AllVideoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterItemClickListener<VideoDetails> {
 
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView rvVideos;
     private TextView tvTotalVideos;
     private VideoAdapter videoAdapter;
-    private List<VideoDetails> videoList = new ArrayList<>();
+    private ArrayList<VideoDetails> videoList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -57,7 +62,7 @@ public class AllVideoFragment extends Fragment implements SwipeRefreshLayout.OnR
                 refreshLayout.setRefreshing(false);
             }
         });
-        videoAdapter = new VideoAdapter(videoList);
+        videoAdapter = new VideoAdapter(videoList,AllVideoFragment.this);
         rvVideos.setLayoutManager(new LinearLayoutManager(getContext()));
         rvVideos.setAdapter(videoAdapter);
         videoAdapter.notifyDataSetChanged();
@@ -80,5 +85,14 @@ public class AllVideoFragment extends Fragment implements SwipeRefreshLayout.OnR
     public void onResume() {
         super.onResume();
         onRefresh();
+    }
+
+    @Override
+    public void onClicked(VideoDetails data, int position) {
+        Intent intent = new Intent(getContext(),VideoPlayerActivity.class);
+        intent.putParcelableArrayListExtra("videoList", videoList);
+        intent.putExtra("position",position);
+        getContext().startActivity(intent);
+
     }
 }
