@@ -45,11 +45,6 @@ public class AllVideoFragment extends Fragment implements SwipeRefreshLayout.OnR
         return view;
     }
 
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//    }
-
     @SuppressLint("NotifyDataSetChanged")
     private void showVideos() {
         BaseActivity.getVideoFetcher().fetchAllVideos(new OnEventListener<List<VideoDetails>>() {

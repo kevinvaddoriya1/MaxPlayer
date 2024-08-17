@@ -1,20 +1,14 @@
 package com.example.videoplayer.adapters;
 
 import android.content.Context;
-import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.videoplayer.R;
 import com.example.videoplayer.models.FolderDetails;
-import com.example.videoplayer.models.VideoDetails;
-import com.example.videoplayer.utils.Utils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -22,9 +16,11 @@ import java.util.Locale;
 
 public class FolderAdapter  extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
     private List<FolderDetails> list;
+    private final AdapterItemClickListener<FolderDetails> listener;
 
-    public FolderAdapter(List<FolderDetails> list) {
+    public FolderAdapter(List<FolderDetails> list, AdapterItemClickListener<FolderDetails> listener) {
         this.list = list;
+        this.listener = listener;
     }
 
     @NonNull
@@ -43,6 +39,8 @@ public class FolderAdapter  extends RecyclerView.Adapter<FolderAdapter.ViewHolde
 
         holder.tv_folder_name.setText(data.getName());
         holder.tv_video_size.setText(String.format(Locale.US,"%d Videos", data.getSize()));
+
+        holder.itemView.setOnClickListener(v -> listener.onClicked(data, position));
 
     }
 

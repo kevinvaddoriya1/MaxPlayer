@@ -1,6 +1,7 @@
 package com.example.videoplayer.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.videoplayer.BaseActivity;
 import com.example.videoplayer.R;
+import com.example.videoplayer.activities.VideoFilesActivity;
+import com.example.videoplayer.adapters.AdapterItemClickListener;
 import com.example.videoplayer.adapters.FolderAdapter;
 import com.example.videoplayer.models.FolderDetails;
 import com.example.videoplayer.videoUtils.OnEventListener;
@@ -18,7 +21,7 @@ import com.example.videoplayer.videoUtils.OnEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FolderFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class FolderFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterItemClickListener<FolderDetails> {
 
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView rv_folders;
@@ -54,7 +57,7 @@ public class FolderFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 super.onSuccess(data);
                 list.addAll(data);
 
-                FolderAdapter adapter = new FolderAdapter(list);
+                FolderAdapter adapter = new FolderAdapter(list,FolderFragment.this);
                 rv_folders.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 updateTotalFolderCount();
@@ -69,4 +72,13 @@ public class FolderFragment extends Fragment implements SwipeRefreshLayout.OnRef
         tv_total_folder.setText(totalVideosText);
     }
 
+    @Override
+    public void onClicked(FolderDetails data, int position) {
+        Bundle bundle = new Bundle();
+        bundle.putString("key", data.getKey());
+        bundle.putString("name", data.getName());
+        Intent intent = new Intent(getContext(), VideoFilesActivity.class);
+        intent.putExtra("folderBundle", bundle);
+        startActivity(intent);
+    }
 }
