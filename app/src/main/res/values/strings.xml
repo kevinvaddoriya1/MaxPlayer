@@ -9,4 +9,10 @@
     <string name="totalFolders">Total Folders : %s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <plurals name="seek_x_second">
+        <item quantity="other">%d seconds</item>
+        <item quantity="one">%d second</item>
+        <item quantity="many">%d seconds</item>
+    </plurals>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.videoplayer.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -30,7 +31,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView tvTitle;
     private ViewPager2 viewPager;
-    private ImageView homeIcon, folderIcon, settingIcon;
+    private ImageView homeIcon, folderIcon, settingIcon,btn_search;
     private TextView tv_home, tv_folder, tv_setting;
     private LinearLayout homeLayout, folderLayout, settingLayout;
 
@@ -60,6 +61,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ft.add(R.id.container_frame, folderFragment, "folderFragment").hide(folderFragment);
         ft.add(R.id.container_frame, settingsFragment, "settingsFragment").hide(settingsFragment);
         ft.commit();
+
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomeActivity.this, SearchActivity.class));
+            }
+        });
 
     }
 
@@ -92,6 +100,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         tv_home = findViewById(R.id.tv_home);
         tv_folder = findViewById(R.id.tv_folder);
         tv_setting = findViewById(R.id.tv_setting);
+        btn_search = findViewById(R.id.btn_search);
     }
 
     private void setCustomTitle() {

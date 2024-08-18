@@ -28,13 +28,6 @@
             android:fontFamily="@font/medium"
             android:text="@string/totalFolders"/>
 
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="8dp"
-            android:padding="3dp"
-            android:src="@drawable/ic_sort"/>
-
     </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

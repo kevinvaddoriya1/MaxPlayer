@@ -46,7 +46,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         Glide.with(holder.img_thumbnail)
                 .asBitmap()
                 .encodeQuality(60)
-                .placeholder(R.drawable.logo)
+                .placeholder(R.color.colorSecondaryText)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .centerCrop()
                 .load(data.getPath())
@@ -71,7 +71,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
     public int getItemCount() {
         return videoList.size();
     }
-
+    public void updateData(List<VideoDetails> newList) {
+        this.videoList = newList;
+        notifyDataSetChanged(); // Notify adapter about data changes
+    }
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView img_thumbnail,img_more;

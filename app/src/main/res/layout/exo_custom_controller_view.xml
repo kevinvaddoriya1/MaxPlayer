@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:id="@+id/exo_controls_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layoutDirection="ltr">
+
+        <LinearLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/exo_bottom_bar_background">
+
+            <ImageButton
+                android:id="@+id/imgBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="centerInside"
+                android:background="@null"
+                android:tint="@color/white"
+                android:src="@drawable/ic_back_arrow"
+                android:contentDescription="Back"/>
+
+            <TextView
+                android:id="@+id/textTitleView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:lines="1"
+                android:textAlignment="gravity"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:textColor="@color/white"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:id="@+id/imgAudio"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="center"
+                android:background="@null"
+                android:src="@drawable/ic_controller_audio_track"
+                android:contentDescription="Audio"/>
+
+
+            <ImageButton
+                android:id="@+id/img_subtitle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="center"
+                android:background="@null"
+                android:clickable="true"
+                style="@style/ExoStyledControls.Button.Bottom.CC"/>
+
+            <ImageButton
+                android:id="@+id/exo_subtitle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="center"
+                android:background="@null"
+                android:visibility="gone"
+                android:clickable="true"
+                style="@style/ExoStyledControls.Button.Bottom.CC"/>
+
+            <ImageButton
+                android:id="@+id/imgScreenRotation"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="center"
+                android:background="@null"
+                android:src="@drawable/ic_controller_screen_rotation"
+                android:contentDescription="Option"/>
+        </LinearLayout>
+
+    </FrameLayout>
+
+<!--    <FrameLayout-->
+<!--        android:id="@+id/exo_bottom_bar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:layout_marginTop="@dimen/exo_styled_bottom_bar_margin_top"-->
+<!--        android:background="@color/exo_bottom_bar_background"-->
+<!--        android:layoutDirection="ltr">-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/semi_bottom_controller"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="28dp"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/exo_time"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="16dp"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:paddingStart="@dimen/exo_styled_bottom_bar_time_padding"-->
+<!--                android:paddingEnd="@dimen/exo_styled_bottom_bar_time_padding"-->
+<!--                android:paddingLeft="@dimen/exo_styled_bottom_bar_time_padding"-->
+<!--                android:paddingRight="@dimen/exo_styled_bottom_bar_time_padding"-->
+<!--                android:layout_gravity="center_vertical|start"-->
+<!--                android:layoutDirection="ltr">-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/exo_position"-->
+<!--                    android:textSize="12sp"-->
+<!--                    style="@style/ExoStyledControls.TimeText.Position"/>-->
+
+<!--                <View-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="1dp"-->
+<!--                    android:layout_weight="1"/>-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/exo_duration"-->
+<!--                    android:textSize="12sp"-->
+<!--                    style="@style/ExoStyledControls.TimeText.Duration"/>-->
+
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/exo_basic_controls"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:layoutDirection="ltr"-->
+<!--                android:weightSum="5"-->
+<!--                android:paddingStart="18dp"-->
+<!--                android:layout_marginEnd="18dp"-->
+<!--                android:layout_marginBottom="6dp">-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/imgLock"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="48dp"-->
+<!--                    android:scaleType="fitCenter"-->
+<!--                    android:padding="9dp"-->
+<!--                    android:background="@null"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:src="@drawable/ic_lock"-->
+<!--                    android:contentDescription="Lock"/>-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/exo_rew"-->
+<!--                    android:src="@drawable/ic_fast_rewind"-->
+<!--                    android:contentDescription="FastRewind"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="48dp"-->
+<!--                    android:padding="6dp"-->
+<!--                    android:scaleType="fitCenter"-->
+<!--                    android:background="@null"-->
+<!--                    android:layout_weight="1"/>-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/img_play_pause"-->
+<!--                    android:src="@drawable/exo_controls_play"-->
+<!--                    android:contentDescription="Play/Pause"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="48dp"-->
+<!--                    android:padding="4dp"-->
+<!--                    android:scaleType="fitCenter"-->
+<!--                    android:background="@null"-->
+<!--                    android:layout_weight="1"/>-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/exo_ffwd"-->
+<!--                    android:src="@drawable/ic_fast_forward"-->
+<!--                    android:contentDescription="FastForward"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="48dp"-->
+<!--                    android:padding="6dp"-->
+<!--                    android:scaleType="fitCenter"-->
+<!--                    android:background="@null"-->
+<!--                    android:layout_weight="1"/>-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/imgResize"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="48dp"-->
+<!--                    android:scaleType="fitCenter"-->
+<!--                    android:padding="9dp"-->
+<!--                    android:background="@null"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:src="@drawable/ic_aspect_ratio"-->
+<!--                    android:contentDescription="Resize"/>-->
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
+<!--    </FrameLayout>-->
+
+
+</merge>

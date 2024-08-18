@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sort by:" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup_sortBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radioButton_default"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Recent (Default)" />
+
+        <RadioButton
+            android:id="@+id/radioButton_nameAsc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name (A to Z)" />
+
+        <RadioButton
+            android:id="@+id/radioButton_nameDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name (Z to A)" />
+
+        <RadioButton
+            android:id="@+id/radioButton_sizeAsc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Size (Small to High)" />
+
+        <RadioButton
+            android:id="@+id/radioButton_sizeDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Size (High to Small)" />
+
+
+
+    </RadioGroup>
+
+</LinearLayout>

@@ -33,6 +33,11 @@ android {
 }
 
 dependencies {
+
+    implementation("androidx.media3:media3-exoplayer:1.4.0")
+    implementation("androidx.media3:media3-exoplayer-dash:1.4.0")
+    implementation("androidx.media3:media3-ui:1.4.0")
+
     implementation("com.airbnb.android:lottie:6.5.0")
     implementation("com.tencent:mmkv:1.3.9")
     implementation("com.github.bumptech.glide:glide:4.16.0")
@@ -46,8 +51,4 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-
-    implementation("androidx.media3:media3-exoplayer:1.4.0")
-    implementation("androidx.media3:media3-exoplayer-dash:1.4.0")
-    implementation("androidx.media3:media3-ui:1.4.0")
 }

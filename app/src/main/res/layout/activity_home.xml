@@ -29,6 +29,7 @@
                 android:textColor="?android:textColorPrimary"/>
 
             <ImageView
+                android:id="@+id/btn_search"
                 android:layout_width="38dp"
                 android:layout_height="38dp"
                 android:padding="5dp"

@@ -1,39 +1,43 @@
 package com.example.videoplayer.activities;
 
 import android.os.Build;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.media3.common.MediaItem;
 import androidx.media3.exoplayer.ExoPlayer;
-import androidx.media3.exoplayer.SimpleExoPlayer;
 import androidx.media3.ui.PlayerView;
 import com.example.videoplayer.R;
 import com.example.videoplayer.models.VideoDetails;
+import com.example.videoplayer.utils.PreferenceUtils;
 
 import java.util.List;
 
 import static com.example.videoplayer.BaseActivity.context;
 
-public class VideoPlayerActivity extends AppCompatActivity {
+public class PlayerActivity extends AppCompatActivity {
     private List<VideoDetails> videoList;
     private int position;
     ExoPlayer player;
     PlayerView playerview;
+
+    public PreferenceUtils mPrefs;
+
+    public static boolean locked = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPrefs = new PreferenceUtils(this);
+
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_video_player);
 
         hideBottomBar();
-
-        playerview = findViewById(R.id.player);
 
         videoList = getIntent().getParcelableArrayListExtra("videoList");
         position = getIntent().getIntExtra("position", -1);

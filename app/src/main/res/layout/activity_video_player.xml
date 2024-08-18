@@ -6,12 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".activities.VideoPlayerActivity">
-    <androidx.media3.ui.PlayerView
-        android:id="@+id/player"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+    tools:context=".activities.PlayerActivity">
 
+<com.example.videoplayer.dtpv.DoubleTapPlayerView
+    android:id="@+id/video_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:show_subtitle_button="true"
+    app:dtpv_controller="@id/youtube_overlay"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

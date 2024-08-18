@@ -1,39 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             tools:context=".fragments.AllVideoFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context=".fragments.AllVideoFragment">
 
     <LinearLayout
-         android:id="@+id/ll_total_video"
-         android:layout_width="match_parent"
-         android:orientation="horizontal"
-         android:layout_marginTop="8dp"
-         android:layout_marginBottom="4dp"
-         android:layout_height="wrap_content">
+        android:id="@+id/ll_total_video"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:layout_height="wrap_content">
 
-         <TextView
-             android:id="@+id/tv_total_video"
-             android:layout_width="0dp"
-             android:layout_weight="1"
-             android:layout_gravity="center"
-             android:layout_height="wrap_content"
-             android:layout_marginStart="8dp"
-             android:textSize="15sp"
-             android:textColor="?android:textColorPrimary"
-             android:fontFamily="@font/medium"
-             android:text="@string/totalVideos"/>
+        <TextView
+            android:id="@+id/tv_total_video"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textSize="15sp"
+            android:textColor="?android:textColorPrimary"
+            android:fontFamily="@font/medium"
+            android:text="@string/totalVideos"/>
 
-         <ImageView
-             android:layout_width="32dp"
-             android:layout_height="32dp"
-             android:layout_marginEnd="8dp"
-             android:padding="3dp"
-             android:src="@drawable/ic_sort"/>
+        <ImageView
+            android:id="@+id/shorting_btn"
+            android:layout_width="56dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:paddingHorizontal="15dp"
+            android:src="@drawable/ic_sort"/>
 
-     </LinearLayout>
+    </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
