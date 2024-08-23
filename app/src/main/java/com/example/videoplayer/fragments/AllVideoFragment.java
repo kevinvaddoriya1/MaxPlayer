@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.videoplayer.BaseActivity;
 import com.example.videoplayer.R;
-import com.example.videoplayer.activities.PlayerActivity;
 import com.example.videoplayer.adapters.AdapterItemClickListener;
 import com.example.videoplayer.adapters.VideoAdapter;
 import com.example.videoplayer.models.VideoDetails;
