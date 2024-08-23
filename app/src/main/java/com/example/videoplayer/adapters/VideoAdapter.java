@@ -1,14 +1,19 @@
 package com.example.videoplayer.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.format.Formatter;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -18,7 +23,13 @@ import com.example.videoplayer.models.VideoDetails;
 import com.example.videoplayer.utils.Utils;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
+
+import static com.example.videoplayer.BaseActivity.context;
+import static com.example.videoplayer.BaseActivity.getContext;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> {
 
@@ -64,6 +75,40 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
                 listener.onClicked(data,position);
             }
         });
+        holder.img_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Create a PopupMenu
+                PopupMenu popup = new PopupMenu(context, holder.img_more, Gravity.END);
+                popup.setGravity(Gravity.END);
+                popup.getMenuInflater().inflate(R.menu.video_item_menu, popup.getMenu());
+
+                // Handle menu item clicks
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int itemId = item.getItemId();
+
+                        if (itemId == R.id.action_delete) {
+                            listener.onDelete(data);
+                            return true;
+                        } else if (itemId == R.id.action_share) {
+                            listener.onShare(data);
+                            return true;
+                        } else if (itemId == R.id.action_info) {
+                            listener.onInfo(data);
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                });
+
+
+                // Show the popup menu
+                popup.show();
+            }
+        });
 
     }
 
@@ -92,4 +137,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
 
         }
     }
+
+
+
 }

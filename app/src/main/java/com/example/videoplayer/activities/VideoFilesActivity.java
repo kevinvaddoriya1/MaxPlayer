@@ -1,11 +1,22 @@
 package com.example.videoplayer.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.format.Formatter;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.IntentSenderRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,11 +27,17 @@ import com.example.videoplayer.R;
 import com.example.videoplayer.adapters.AdapterItemClickListener;
 import com.example.videoplayer.adapters.VideoAdapter;
 import com.example.videoplayer.models.VideoDetails;
+import com.example.videoplayer.utils.Utils;
 import com.example.videoplayer.videoUtils.OnEventListener;
+import com.example.videoplayer.videoUtils.VideoDeletionHelper;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.videoplayer.BaseActivity.context;
 
 public class VideoFilesActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, AdapterItemClickListener<VideoDetails> {
 
@@ -28,7 +45,7 @@ public class VideoFilesActivity extends AppCompatActivity implements SwipeRefres
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView rvVideos;
     private VideoAdapter videoAdapter;
-    private List<VideoDetails> videoList = new ArrayList<>();
+    private ArrayList<VideoDetails> videoList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +62,17 @@ public class VideoFilesActivity extends AppCompatActivity implements SwipeRefres
         toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
 
         Bundle bundle = getIntent().getBundleExtra("folderBundle");
-
+        deleteLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartIntentSenderForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        handleDeletionResult(result.getResultCode());
+                        Toast.makeText(this, "Video deletion completed", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Video deletion failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
         if (bundle != null) {
             key = bundle.getString("key");
             String name = bundle.getString("name");
@@ -76,7 +103,7 @@ public class VideoFilesActivity extends AppCompatActivity implements SwipeRefres
             }
         });
 
-        videoAdapter = new VideoAdapter(videoList,this);
+        videoAdapter = new VideoAdapter(videoList,VideoFilesActivity.this);
         rvVideos.setLayoutManager(new LinearLayoutManager(this));
         rvVideos.setAdapter(videoAdapter);
         videoAdapter.notifyDataSetChanged();
@@ -87,9 +114,83 @@ public class VideoFilesActivity extends AppCompatActivity implements SwipeRefres
         refreshLayout.setRefreshing(true);
         showVideos();
     }
-
     @Override
     public void onClicked(VideoDetails data, int position) {
+//        Intent intent = new Intent(VideoFilesActivity.this, .class);
+//        intent.putParcelableArrayListExtra("videoList", videoList);
+//        intent.putExtra("position",position);
+//        startActivity(intent);
 
+    }
+    private ActivityResultLauncher<IntentSenderRequest> deleteLauncher;
+
+    VideoDetails currentVideoToDelete;
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    @Override
+    public void onDelete(VideoDetails video) {
+        currentVideoToDelete = video; // Store the video to be deleted
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            VideoDeletionHelper.deleteVideo(BaseActivity.getContext(), video.getPath(), deleteLauncher);
+        } else {
+            // Directly delete if on a lower API level
+            VideoDeletionHelper.deleteVideo(BaseActivity.getContext(), video.getPath(), null);
+        }
+    }
+
+    @Override
+    public void onShare(VideoDetails video) {
+        File videoFile = new File(video.getPath());
+        Uri uriPath = Uri.parse(videoFile.getPath());
+
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uriPath);
+        shareIntent.setType("video/*");
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(Intent.createChooser(shareIntent, "send"));
+    }
+
+    @Override
+    public void onInfo(VideoDetails video) {
+        LayoutInflater inflater = LayoutInflater.from(VideoFilesActivity.this);
+        View dialogView = inflater.inflate(R.layout.video_info_dialog, null);
+
+        TextView videoName = dialogView.findViewById(R.id.textView_video_name);
+        TextView videoLocation = dialogView.findViewById(R.id.textView_video_location);
+        TextView videoDate = dialogView.findViewById(R.id.textView_video_date);
+        TextView videoSize = dialogView.findViewById(R.id.textView_video_size);
+        TextView videoLength = dialogView.findViewById(R.id.textView_video_length);
+
+        TextView videoResolution = dialogView.findViewById(R.id.textView_video_resolution);
+
+        // Populate the dialog with video information
+        videoName.setText(video.getDisplayName());
+        videoLocation.setText(video.getPath());
+        videoDate.setText(video.getDateAdded());
+        videoSize.setText(Utils.timeConversion(video.getDuration()));
+        videoLength.setText(String.format(Formatter.formatFileSize(context, video.getSize())));
+        videoResolution.setText(video.getResolution());
+
+        new MaterialAlertDialogBuilder(VideoFilesActivity.this)
+                .setTitle("Video Information")
+                .setView(dialogView)
+                .setPositiveButton("OK", null)
+                .show();
+    }
+    private void handleDeletionResult(int resultCode) {
+        if (resultCode == RESULT_OK) {
+            // Continue with deletion if permission is granted
+            if (currentVideoToDelete != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    VideoDeletionHelper.deleteVideo(
+                            BaseActivity.getContext(),
+                            currentVideoToDelete.getPath(),
+                            deleteLauncher
+                    );
+                }
+            }
+        } else {
+            Toast.makeText(this, "Video deletion failed", Toast.LENGTH_SHORT).show();
+        }
     }
 }

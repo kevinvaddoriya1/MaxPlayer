@@ -16,6 +16,7 @@ import com.example.videoplayer.activities.VideoFilesActivity;
 import com.example.videoplayer.adapters.AdapterItemClickListener;
 import com.example.videoplayer.adapters.FolderAdapter;
 import com.example.videoplayer.models.FolderDetails;
+import com.example.videoplayer.models.VideoDetails;
 import com.example.videoplayer.videoUtils.OnEventListener;
 
 import java.util.ArrayList;
@@ -80,5 +81,20 @@ public class FolderFragment extends Fragment implements SwipeRefreshLayout.OnRef
         Intent intent = new Intent(getContext(), VideoFilesActivity.class);
         intent.putExtra("folderBundle", bundle);
         startActivity(intent);
+    }
+
+    @Override
+    public void onDelete(VideoDetails video) {
+
+    }
+
+    @Override
+    public void onShare(VideoDetails video) {
+
+    }
+
+    @Override
+    public void onInfo(VideoDetails video) {
+
     }
 }
