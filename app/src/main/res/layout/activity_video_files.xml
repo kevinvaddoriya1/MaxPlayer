@@ -17,6 +17,10 @@
         app:title="@string/app_name"
         app:titleTextColor="?android:textColorPrimary"/>
 
+    <com.github.vkay94.dtpv.DoubleTapPlayerView
+        android:id="@+id/playerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"

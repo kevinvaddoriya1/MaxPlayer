@@ -196,10 +196,10 @@ public class AllVideoFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onClicked(VideoDetails data, int position) {
-        Intent intent = new Intent(getContext(), PlayerActivity.class);
-        intent.putParcelableArrayListExtra("videoList", videoList);
-        intent.putExtra("position",position);
-        getContext().startActivity(intent);
+//        Intent intent = new Intent(getContext(), PlayerActivity.class);
+//        intent.putParcelableArrayListExtra("videoList", videoList);
+//        intent.putExtra("position",position);
+//        getContext().startActivity(intent);
 
     }
     private ActivityResultLauncher<IntentSenderRequest> deleteLauncher;

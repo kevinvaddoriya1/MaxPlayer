@@ -30,6 +30,7 @@ import com.example.videoplayer.models.VideoDetails;
 import com.example.videoplayer.utils.Utils;
 import com.example.videoplayer.videoUtils.OnEventListener;
 import com.example.videoplayer.videoUtils.VideoDeletionHelper;
+import com.github.vkay94.dtpv.DoubleTapPlayerView;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -114,6 +115,7 @@ public class VideoFilesActivity extends AppCompatActivity implements SwipeRefres
         refreshLayout.setRefreshing(true);
         showVideos();
     }
+
     @Override
     public void onClicked(VideoDetails data, int position) {
 //        Intent intent = new Intent(VideoFilesActivity.this, .class);
