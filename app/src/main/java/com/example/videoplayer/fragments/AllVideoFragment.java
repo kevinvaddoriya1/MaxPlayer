@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.videoplayer.BaseActivity;
 import com.example.videoplayer.R;
+import com.example.videoplayer.activities.PlayerActivity;
 import com.example.videoplayer.adapters.AdapterItemClickListener;
 import com.example.videoplayer.adapters.VideoAdapter;
 import com.example.videoplayer.models.VideoDetails;
@@ -196,11 +197,12 @@ public class AllVideoFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onClicked(VideoDetails data, int position) {
-//        Intent intent = new Intent(getContext(), PlayerActivity.class);
-//        intent.putParcelableArrayListExtra("videoList", videoList);
-//        intent.putExtra("position",position);
-//        getContext().startActivity(intent);
-
+        Bundle bundle = new Bundle();
+        bundle.putInt("position", position);
+        bundle.putParcelableArrayList("videoArrayList", videoList);
+        Intent intent = new Intent(context, PlayerActivity.class);
+        intent.putExtra("VideoListBundle", bundle);
+        getContext().startActivity(intent);
     }
     private ActivityResultLauncher<IntentSenderRequest> deleteLauncher;
 

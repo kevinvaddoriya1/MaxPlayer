@@ -38,9 +38,9 @@ android {
 
 dependencies {
 
-    implementation("androidx.media3:media3-exoplayer:1.4.0")
-    implementation("androidx.media3:media3-exoplayer-dash:1.4.0")
-    implementation("androidx.media3:media3-ui:1.4.0")
+    implementation(project(":doubletapplayerview"))
+
+    implementation("com.google.android.exoplayer:exoplayer:2.19.1")
 
     implementation("com.airbnb.android:lottie:6.5.0")
     implementation("com.tencent:mmkv:1.3.9")
@@ -52,14 +52,10 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.activity:activity:1.9.1")
-    implementation("androidx.core:core-ktx:+")
+    implementation("androidx.core:core-ktx:1.13.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     implementation("androidx.activity:activity-ktx:1.9.1")
     implementation("androidx.fragment:fragment-ktx:1.8.2")
-    implementation("androidx.media3:media3-session:1.4.0")
-    implementation(project(":doubletapplayerview"))
-// or latest version
-
 }

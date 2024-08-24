@@ -118,11 +118,12 @@ public class VideoFilesActivity extends AppCompatActivity implements SwipeRefres
 
     @Override
     public void onClicked(VideoDetails data, int position) {
-//        Intent intent = new Intent(VideoFilesActivity.this, .class);
-//        intent.putParcelableArrayListExtra("videoList", videoList);
-//        intent.putExtra("position",position);
-//        startActivity(intent);
-
+        Bundle bundle = new Bundle();
+        bundle.putInt("position", position);
+        bundle.putParcelableArrayList("videoArrayList", videoList);
+        Intent intent = new Intent(context, PlayerActivity.class);
+        intent.putExtra("VideoListBundle", bundle);
+        startActivity(intent);
     }
     private ActivityResultLauncher<IntentSenderRequest> deleteLauncher;
 
