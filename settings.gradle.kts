@@ -18,4 +18,3 @@ dependencyResolutionManagement {
 rootProject.name = "VideoPlayer"
 include(":app")
 include(":doubletapplayerview")
- 
