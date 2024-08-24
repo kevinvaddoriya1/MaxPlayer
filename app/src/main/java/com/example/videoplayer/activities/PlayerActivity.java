@@ -10,7 +10,6 @@ import android.media.session.PlaybackState;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.util.Rational;
 import android.view.*;
@@ -40,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.ArrayList;
 
+import static com.google.common.io.Files.getFileExtension;
 import static java.lang.Math.abs;
 
 public class PlayerActivity extends AppCompatActivity implements View.OnClickListener, GestureDetector.OnGestureListener, AudioManager.OnAudioFocusChangeListener{
@@ -101,8 +101,10 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             playlist = bundle.getParcelableArrayList("videoArrayList");
 
             initializeViews();
+            RenderersFactory renderersFactory = new DefaultRenderersFactory(this)
+                    .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
 
-            player = new ExoPlayer.Builder(this)
+            player = new ExoPlayer.Builder(this, renderersFactory)
                     .build();
 
             player.addListener(new Player.Listener() {
@@ -112,16 +114,28 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                         final Format format = player.getVideoFormat();
                         int videoWidth = format.width;
                         int videoHeight = format.height;
+
+                        int rotationDegrees = format.rotationDegrees;
+
+                        if (rotationDegrees == 90 || rotationDegrees == 270) {
+                            // Swap width and height for rotated videos
+                            int temp = videoWidth;
+                            videoWidth = videoHeight;
+                            videoHeight = temp;
+                        }
+
                         if (videoWidth > videoHeight) {
-                            PlayerActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+                            PlayerActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                         } else {
-                            PlayerActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+                            PlayerActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                         }
                     }
                 }
             });
 
             playVideo();
+
+
 //            MMKV mmkv = MMKV.defaultMMKV();
 //            if (!mmkv.decodeBool(Constants.IS_GUIDE_SHOWED, false)) {
 //                showGuides();
@@ -141,7 +155,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             backPressed();
         }
     }
-
 
 //    private void showGuides() {
 //        MMKV mmkv = MMKV.defaultMMKV();
@@ -358,7 +371,8 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         concatenatingMediaSource = new ConcatenatingMediaSource();
         for (int i = 0; i < playlist.size(); i++) {
             new File(String.valueOf(playlist.get(i)));
-            MediaSource mediaSource = new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(Uri.parse(String.valueOf(uri))));
+            MediaSource mediaSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
+                    .createMediaSource(MediaItem.fromUri(Uri.parse(String.valueOf(uri))));
             concatenatingMediaSource.addMediaSource(mediaSource);
         }
 
