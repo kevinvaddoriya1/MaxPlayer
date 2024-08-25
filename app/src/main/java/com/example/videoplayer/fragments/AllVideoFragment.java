@@ -294,7 +294,7 @@ public class AllVideoFragment extends Fragment implements SwipeRefreshLayout.OnR
                             deleteLauncher
                     );
                 }
-            }
+            };
         } else {
             Toast.makeText(getContext(), "Video deletion failed", Toast.LENGTH_SHORT).show();
         }
