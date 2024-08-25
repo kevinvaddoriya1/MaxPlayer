@@ -52,7 +52,7 @@ public class AllVideoFragment extends Fragment implements SwipeRefreshLayout.OnR
     private VideoAdapter videoAdapter;
     private ArrayList<VideoDetails> videoList = new ArrayList<>();
     private ImageView btn_short;
-
+    private String selectedSortOption = "recent";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -97,6 +97,23 @@ public class AllVideoFragment extends Fragment implements SwipeRefreshLayout.OnR
         // Reference to RadioGroup
         RadioGroup radioGroup = dialogView.findViewById(R.id.radioGroup_sortBy);
 
+        switch (selectedSortOption) {
+            case "recent":
+                radioGroup.check(R.id.radioButton_default);
+                break;
+            case "sizeAsc":
+                radioGroup.check(R.id.radioButton_sizeAsc);
+                break;
+            case "sizeDesc":
+                radioGroup.check(R.id.radioButton_sizeDesc);
+                break;
+            case "nameAsc":
+                radioGroup.check(R.id.radioButton_nameAsc);
+                break;
+            case "nameDesc":
+                radioGroup.check(R.id.radioButton_nameDesc);
+                break;
+        }
 
         // Build and display the dialog
         new MaterialAlertDialogBuilder(getContext())
@@ -107,17 +124,22 @@ public class AllVideoFragment extends Fragment implements SwipeRefreshLayout.OnR
                     int selectedId = radioGroup.getCheckedRadioButtonId();
                     RadioButton selectedRadioButton = dialogView.findViewById(selectedId);
 
-                    if (selectedId != -1) {  // Ensure a button is selected
-                        if (selectedId == R.id.radioButton_sizeAsc) {
+                    if (selectedId != -1) {
+                        if (selectedId == R.id.radioButton_default) {
+                            selectedSortOption = "recent";
+                            showVideos(); // Default sorting logic
+                        } else if (selectedId == R.id.radioButton_sizeAsc) {
+                            selectedSortOption = "sizeAsc";
                             sortVideosBySize(true);  // Small to High
                         } else if (selectedId == R.id.radioButton_sizeDesc) {
+                            selectedSortOption = "sizeDesc";
                             sortVideosBySize(false); // High to Small
                         } else if (selectedId == R.id.radioButton_nameAsc) {
+                            selectedSortOption = "nameAsc";
                             sortVideosByName(true);  // A to Z
                         } else if (selectedId == R.id.radioButton_nameDesc) {
+                            selectedSortOption = "nameDesc";
                             sortVideosByName(false); // Z to A
-                        } else {
-
                         }
                     } else {
 
