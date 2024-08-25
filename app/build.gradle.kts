@@ -40,7 +40,7 @@ dependencies {
 
     implementation(project(":doubletapplayerview"))
 
-    implementation("com.google.android.exoplayer:exoplayer:2.19.1")
+    implementation("com.google.android.exoplayer:exoplayer:2.16.1")
 
     implementation("com.airbnb.android:lottie:6.5.0")
     implementation("com.tencent:mmkv:1.3.9")
