@@ -11,6 +11,10 @@
 
     <style name="Theme.VideoPlayer" parent="Base.Theme.VideoPlayer"/>
 
+<!--    <style name="alertDialog" parent="Theme.AppCompat.Dialog.Alert">-->
+<!--        <item name="android:textColor">@color/white</item>-->
+<!--    </style>-->
+
     <style name="CustomShapeNeumorphCard">
         <item name="neumorph_cornerFamily">rounded</item>
         <item name="neumorph_cornerSizeTopLeft">18dp</item>

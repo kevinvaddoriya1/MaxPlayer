@@ -41,6 +41,19 @@
                 android:textSize="18sp"/>
 
             <ImageView
+                android:id="@+id/btnCaption"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_caption"/>
+
+            <ImageView
+                android:id="@+id/btnAudio"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_controller_audio_track"/>
+            <ImageView
                 android:id="@+id/btnPip"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -49,15 +62,7 @@
 
         </LinearLayout>
 
-        <!--        <androidx.recyclerview.widget.RecyclerView-->
-        <!--            android:id="@+id/recyclerview_icon"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_below="@+id/toolbar"-->
-        <!--            android:layout_alignParentStart="true"-->
-        <!--            android:layout_alignParentLeft="true" />-->
 
-        <!--        <include layout="@layout/swipe_zoom_design" />-->
 
         <LinearLayout
             android:layout_width="match_parent"

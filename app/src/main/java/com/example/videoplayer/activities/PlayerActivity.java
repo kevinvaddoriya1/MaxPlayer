@@ -2,6 +2,7 @@ package com.example.videoplayer.activities;
 
 import android.annotation.SuppressLint;
 import android.app.PictureInPictureParams;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -17,6 +18,7 @@ import android.widget.*;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GestureDetectorCompat;
 import com.example.videoplayer.R;
@@ -29,17 +31,21 @@ import com.google.android.exoplayer2.*;
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.source.TrackGroup;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.DefaultTimeBar;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Locale;
 
-import static com.google.common.io.Files.getFileExtension;
 import static java.lang.Math.abs;
 
 public class PlayerActivity extends AppCompatActivity implements View.OnClickListener, GestureDetector.OnGestureListener, AudioManager.OnAudioFocusChangeListener{
@@ -70,6 +76,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private RelativeLayout root;
     private ImageView video_back, btnPip, unlock, exo_prev, exo_play, exo_pause, exo_next, scaling, lock;
     private TextView video_title, exo_position, exo_duration;
+    private ImageView btnAudio, btnCaption;
     private DefaultTimeBar exo_progress;
     private GestureDetectorCompat gestureDetectorCompat;
     private LinearLayout ll_message;
@@ -84,6 +91,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private long seekMax;
     private final long SEEK_STEP = 1000;
 
+    private DefaultTrackSelector trackSelector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +109,13 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             playlist = bundle.getParcelableArrayList("videoArrayList");
 
             initializeViews();
+
             RenderersFactory renderersFactory = new DefaultRenderersFactory(this)
                     .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
 
+            trackSelector = new DefaultTrackSelector(this);
             player = new ExoPlayer.Builder(this, renderersFactory)
+                    .setTrackSelector(trackSelector)
                     .build();
 
             player.addListener(new Player.Listener() {
@@ -156,6 +167,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+
 //    private void showGuides() {
 //        MMKV mmkv = MMKV.defaultMMKV();
 //
@@ -184,6 +196,8 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
         video_back = findViewById(R.id.video_back);
         btnPip = findViewById(R.id.btnPip);
+        btnAudio = findViewById(R.id.btnAudio);
+        btnCaption = findViewById(R.id.btnCaption);
         unlock = findViewById(R.id.unlock);
         lock = findViewById(R.id.lock);
         exo_prev = findViewById(R.id.exo_prev);
@@ -213,6 +227,8 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         unlock.setOnClickListener(this);
         video_back.setOnClickListener(this);
         btnPip.setOnClickListener(this);
+        btnAudio.setOnClickListener(this);
+        btnCaption.setOnClickListener(this);
 
         scaling.setOnClickListener(fillListener);
 
@@ -223,6 +239,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -300,6 +317,99 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             } else {
                 Toast.makeText(this, "Device does not support Picture-in-Picture mode", Toast.LENGTH_SHORT).show();
             }
+        }
+        if (id == R.id.btnAudio) {
+            ArrayList<String> audioTrack = new ArrayList<>();
+            ArrayList<String> audioList = new ArrayList<>();
+            for (TracksInfo.TrackGroupInfo group : player.getCurrentTracksInfo().getTrackGroupInfos()) {
+                if (group.getTrackType() == C.TRACK_TYPE_AUDIO) {
+                    TrackGroup groupInfo = group.getTrackGroup();
+                    for (int i = 0; i < groupInfo.length; i++) {
+                        audioTrack.add(groupInfo.getFormat(i).language.toString());
+                        audioList.add(
+                                (audioList.size() + 1) + ". " +
+                                        new Locale(groupInfo.getFormat(i).language.toString()).getDisplayLanguage()
+                        );
+                    }
+                }
+            }
+
+            if (audioList.get(0).contains("null")) {
+                audioList.set(0, "1. Default Track");
+            }
+
+            CharSequence[] tempTracks = audioList.toArray(new CharSequence[audioList.size()]);
+            AlertDialog audioDialog = new MaterialAlertDialogBuilder(this)
+                    .setTitle("Select Language")
+                    .setPositiveButton("Off Audio", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            trackSelector.setParameters(
+                                    trackSelector.buildUponParameters().setRendererDisabled(
+                                            C.TRACK_TYPE_AUDIO, true
+                                    )
+                            );
+                            dialog.dismiss();
+                        }
+                    })
+                    .setItems(tempTracks, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int position) {
+                            Snackbar.make(view, audioList.get(position) + " Selected", 3000).show();
+                            trackSelector.setParameters(
+                                    trackSelector.buildUponParameters()
+                                            .setRendererDisabled(C.TRACK_TYPE_AUDIO, false)
+                                            .setPreferredAudioLanguage(audioTrack.get(position))
+                            );
+                        }
+                    })
+                    .create();
+            audioDialog.show();
+        }
+        if (id == R.id.btnCaption) {
+            ArrayList<String> subtitles = new ArrayList<>();
+            ArrayList<String> subtitlesList = new ArrayList<>();
+            for (TracksInfo.TrackGroupInfo group : player.getCurrentTracksInfo().getTrackGroupInfos()) {
+                if (group.getTrackType() == C.TRACK_TYPE_TEXT) {
+                    TrackGroup groupInfo = group.getTrackGroup();
+                    for (int i = 0; i < groupInfo.length; i++) {
+                        subtitles.add(groupInfo.getFormat(i).language.toString());
+                        subtitlesList.add(
+                                (subtitlesList.size() + 1) + ". " +
+                                        new Locale(groupInfo.getFormat(i).language.toString()).getDisplayLanguage()
+                        );
+                    }
+                }
+            }
+
+            CharSequence[] tempTracks = subtitlesList.toArray(new CharSequence[subtitlesList.size()]);
+            AlertDialog sDialog = new MaterialAlertDialogBuilder(this)
+                    .setTitle("Select Subtitles")
+                    .setPositiveButton("Off Subtitles", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            trackSelector.setParameters(
+                                    trackSelector.buildUponParameters().setRendererDisabled(
+                                            C.TRACK_TYPE_VIDEO, true
+                                    )
+                            );
+                            dialog.dismiss();
+                        }
+                    })
+                    .setItems(tempTracks, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int position) {
+                            Snackbar.make(view, subtitlesList.get(position) + " Selected", 3000).show();
+                            trackSelector.setParameters(
+                                    trackSelector.buildUponParameters()
+                                            .setRendererDisabled(C.TRACK_TYPE_VIDEO, false)
+                                            .setPreferredTextLanguage(subtitles.get(position))
+                            );
+                        }
+                    })
+                    .create();
+            sDialog.show();
+
         }
     }
 
