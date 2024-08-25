@@ -1,14 +1,37 @@
 package com.example.videoplayer.utils;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.util.DisplayMetrics;
 import android.util.Rational;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import com.github.vkay94.dtpv.DoubleTapPlayerView;
 import com.google.android.exoplayer2.Format;
 
 public class Utils {
+
+    public DialogListener dialogListener;
+
+    public static void alertDialog(Activity activity, int layoutResource, boolean isCancelable, DialogListener dialogListener) {
+        new Utils().dialogListener = dialogListener;
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(activity);
+        LayoutInflater layoutInflater = activity.getLayoutInflater();
+        builder.setView(layoutInflater.inflate(layoutResource, null));
+        android.app.AlertDialog alertDialog = builder.create();
+        alertDialog.setCancelable(isCancelable);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        alertDialog.show();
+        dialogListener.onCreated(alertDialog);
+    }
+
+    public static interface DialogListener {
+        public void onCreated(AlertDialog dialog);
+    }
+
     public static String timeConversion(Long millie) {
         if (millie != null) {
             long seconds = (millie / 1000);

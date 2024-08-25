@@ -1,16 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:background="?android:windowBackground"
     tools:context=".fragments.SettingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <soup.neumorphism.NeumorphCardView
+        android:id="@+id/privacyPolicy"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="18dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Neumorph.CardView"
+        app:neumorph_shapeAppearance="@style/CustomShapeNeumorphCard"
+        android:padding="12dp">
 
-</FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Privacy Policy"
+            android:layout_marginVertical="18dp"
+            android:textSize="16sp"
+            android:layout_marginStart="22dp"
+            android:textColor="?android:textColorPrimary"/>
+
+    </soup.neumorphism.NeumorphCardView>
+
+    <soup.neumorphism.NeumorphCardView
+        android:id="@+id/rateUs"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Neumorph.CardView"
+        app:neumorph_shapeAppearance="@style/CustomShapeNeumorphCard"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rate Us"
+            android:layout_marginVertical="18dp"
+            android:textSize="16sp"
+            android:layout_marginStart="22dp"
+            android:textColor="?android:textColorPrimary"/>
+
+    </soup.neumorphism.NeumorphCardView>
+
+    <soup.neumorphism.NeumorphCardView
+        android:id="@+id/shareApp"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Neumorph.CardView"
+        app:neumorph_shapeAppearance="@style/CustomShapeNeumorphCard"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Share With Your Friends"
+            android:layout_marginVertical="18dp"
+            android:textSize="16sp"
+            android:layout_marginStart="22dp"
+            android:textColor="?android:textColorPrimary"/>
+
+    </soup.neumorphism.NeumorphCardView>
+
+    <soup.neumorphism.NeumorphCardView
+        android:id="@+id/exitApp"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Neumorph.CardView"
+        app:neumorph_shapeAppearance="@style/CustomShapeNeumorphCard"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exit"
+            android:layout_marginVertical="18dp"
+            android:textSize="16sp"
+            android:layout_marginStart="22dp"
+            android:textColor="?android:textColorPrimary"/>
+
+    </soup.neumorphism.NeumorphCardView>
+
+</LinearLayout>
