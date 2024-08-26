@@ -38,9 +38,16 @@ android {
 
 dependencies {
 
+        implementation("com.github.anilbeesetti.nextlib:nextlib-media3ext:0.8.2") // To add media3 software decoders and extensions
+        implementation("com.github.anilbeesetti.nextlib:nextlib-mediainfo:0.8.2") // To get media info through ffmpeg
+
+    implementation("androidx.media3:media3-exoplayer:1.4.0")
+    implementation("androidx.media3:media3-exoplayer-dash:1.4.0")
+    implementation("androidx.media3:media3-ui:1.4.0")
+
     implementation(project(":doubletapplayerview"))
 
-    implementation("com.google.android.exoplayer:exoplayer:2.16.1")
+//    implementation("com.google.android.exoplayer:exoplayer:2.16.1")
 
     implementation("com.airbnb.android:lottie:6.5.0")
     implementation("com.tencent:mmkv:1.3.9")

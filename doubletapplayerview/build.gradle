@@ -44,8 +44,11 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "androidx.core:core-ktx:$versions.core_ktx"
 
-    implementation "com.google.android.exoplayer:exoplayer-core:$versions.exoplayer"
-    implementation "com.google.android.exoplayer:exoplayer-ui:$versions.exoplayer"
+    implementation "androidx.media3:media3-exoplayer:1.4.0"
+    implementation "androidx.media3:media3-exoplayer-dash:1.4.0"
+    implementation "androidx.media3:media3-ui:1.4.0"
+//    implementation "com.google.android.exoplayer:exoplayer-core:$versions.exoplayer"
+//    implementation "com.google.android.exoplayer:exoplayer-ui:$versions.exoplayer"
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintlayout"
 }
 

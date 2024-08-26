@@ -3,7 +3,7 @@ package com.example.videoplayer.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import com.google.android.exoplayer2.ExoPlayer;
+import androidx.media3.exoplayer.ExoPlayer;
 
 public class PreferenceUtils {
     private static final String PREF_KEY_PLAYBACK_POSITION = "pp_";

@@ -11,15 +11,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.widget.TextViewCompat
+import androidx.media3.common.Player
 import com.github.vkay94.dtpv.DoubleTapPlayerView
 import com.github.vkay94.dtpv.PlayerDoubleTapListener
 import com.github.vkay94.dtpv.R
 import com.github.vkay94.dtpv.SeekListener
 import com.github.vkay94.dtpv.youtube.views.CircleClipTapView
 import com.github.vkay94.dtpv.youtube.views.SecondsView
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.PlayerView
-
 
 /**
  * Overlay for [DoubleTapPlayerView] to create a similar UI/UX experience like the official

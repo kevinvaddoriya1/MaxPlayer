@@ -2,7 +2,6 @@ package com.example.videoplayer.activities;
 
 import android.annotation.SuppressLint;
 import android.app.PictureInPictureParams;
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -18,33 +17,34 @@ import android.widget.*;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GestureDetectorCompat;
+import androidx.media3.common.*;
+import androidx.media3.common.util.Util;
+import androidx.media3.datasource.DefaultDataSourceFactory;
+import androidx.media3.exoplayer.DefaultRenderersFactory;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.exoplayer.SeekParameters;
+import androidx.media3.exoplayer.source.ConcatenatingMediaSource;
+import androidx.media3.exoplayer.source.MediaSource;
+import androidx.media3.exoplayer.source.ProgressiveMediaSource;
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector;
+import androidx.media3.ui.AspectRatioFrameLayout;
+import androidx.media3.ui.DefaultTimeBar;
+import androidx.media3.ui.PlayerControlView;
+import androidx.media3.ui.TrackSelectionDialogBuilder;
 import com.example.videoplayer.R;
 import com.example.videoplayer.models.VideoDetails;
 import com.example.videoplayer.utils.PreferenceUtils;
 import com.example.videoplayer.utils.Utils;
 import com.github.vkay94.dtpv.DoubleTapPlayerView;
 import com.github.vkay94.dtpv.youtube.YouTubeOverlay;
-import com.google.android.exoplayer2.*;
-import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.source.TrackGroup;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.exoplayer2.ui.DefaultTimeBar;
-import com.google.android.exoplayer2.ui.PlayerControlView;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import io.github.anilbeesetti.nextlib.media3ext.ffdecoder.NextRenderersFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import static java.lang.Math.abs;
 
@@ -74,7 +74,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private String videoTitle;
     private ConcatenatingMediaSource concatenatingMediaSource;
     private RelativeLayout root;
-    private ImageView video_back, btnPip, unlock, exo_prev, exo_play, exo_pause, exo_next, scaling, lock;
+    private ImageView video_back, btnPip, unlock, exo_prev, exoPlayPause, exo_next, scaling, lock;
     private TextView video_title, exo_position, exo_duration;
     private ImageView btnAudio, btnCaption;
     private DefaultTimeBar exo_progress;
@@ -110,39 +110,18 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
             initializeViews();
 
-            RenderersFactory renderersFactory = new DefaultRenderersFactory(this)
-                    .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
+            NextRenderersFactory renderersFactory = (NextRenderersFactory) new NextRenderersFactory(this)
+                    .setEnableDecoderFallback(true)
+                    .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
 
             trackSelector = new DefaultTrackSelector(this);
-            player = new ExoPlayer.Builder(this, renderersFactory)
+
+            player = new ExoPlayer.Builder(this)
+                    .setRenderersFactory(renderersFactory)
                     .setTrackSelector(trackSelector)
                     .build();
 
-            player.addListener(new Player.Listener() {
-                @Override
-                public void onPlaybackStateChanged(int state) {
-                    if (state == Player.STATE_READY) {
-                        final Format format = player.getVideoFormat();
-                        int videoWidth = format.width;
-                        int videoHeight = format.height;
-
-                        int rotationDegrees = format.rotationDegrees;
-
-                        if (rotationDegrees == 90 || rotationDegrees == 270) {
-                            // Swap width and height for rotated videos
-                            int temp = videoWidth;
-                            videoWidth = videoHeight;
-                            videoHeight = temp;
-                        }
-
-                        if (videoWidth > videoHeight) {
-                            PlayerActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                        } else {
-                            PlayerActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                        }
-                    }
-                }
-            });
+            applyListeners();
 
             playVideo();
 
@@ -165,6 +144,48 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
             backPressed();
         }
+    }
+
+    private void applyListeners() {
+        player.addListener(new Player.Listener() {
+            @Override
+            public void onVideoSizeChanged(VideoSize videoSize) {
+                float aspectRatio = (float) videoSize.width / videoSize.height;
+                int rotationDegrees = videoSize.unappliedRotationDegrees;
+
+                if (rotationDegrees == 90 || rotationDegrees == 270) {
+                    // The video is rotated, so the aspect ratio should be inverted
+                    aspectRatio = 1 / aspectRatio;
+                }
+                if (aspectRatio > 1) {
+                    // Landscape video
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                } else {
+                    // Portrait video
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                }
+            }
+
+            @Override
+            public void onPlaybackStateChanged(int playbackState) {
+                if (playbackState == Player.STATE_ENDED) {
+                    // Reset to default orientation when the video ends
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                }
+            }
+
+            @Override
+            public void onIsPlayingChanged(boolean isPlaying) {
+
+                playerView.setKeepScreenOn(isPlaying);
+                if (player.isPlaying()) {
+                    exoPlayPause.setImageResource(R.drawable.ic_controller_pause);
+                } else {
+                    exoPlayPause.setImageResource(R.drawable.ic_controller_play);
+                }
+            }
+        });
+
     }
 
 
@@ -201,8 +222,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         unlock = findViewById(R.id.unlock);
         lock = findViewById(R.id.lock);
         exo_prev = findViewById(R.id.exo_prev);
-        exo_play = findViewById(R.id.exo_play);
-        exo_pause = findViewById(R.id.exo_pause);
+        exoPlayPause = findViewById(R.id.exoPlayPause);
         exo_next = findViewById(R.id.exo_next);
         scaling = findViewById(R.id.scaling);
 
@@ -223,6 +243,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
         exo_next.setOnClickListener(this);
         exo_prev.setOnClickListener(this);
+        exoPlayPause.setOnClickListener(this);
         lock.setOnClickListener(this);
         unlock.setOnClickListener(this);
         video_back.setOnClickListener(this);
@@ -237,12 +258,42 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             pictureInPicture = new PictureInPictureParams.Builder();
         }
+
+        btnCaption.setOnLongClickListener(v -> {
+            player.setTrackSelectionParameters(
+                    player
+                            .getTrackSelectionParameters()
+                            .buildUpon()
+                            .setTrackTypeDisabled(C.TRACK_TYPE_TEXT, true)
+                            .build());
+            Snackbar.make(v, "Caption Disabled.", 2500).show();
+            return true;
+        });
+        btnAudio.setOnLongClickListener(v -> {
+            player.setTrackSelectionParameters(
+                    player
+                            .getTrackSelectionParameters()
+                            .buildUpon()
+                            .setTrackTypeDisabled(C.TRACK_TYPE_AUDIO, true)
+                            .build());
+            Snackbar.make(v, "Audio Disabled.", 2500).show();
+            return true;
+        });
     }
 
     @SuppressLint("ResourceType")
     @Override
     public void onClick(View view) {
         int id = view.getId();
+        if (id == R.id.exoPlayPause) {
+            if (player == null)
+                return;
+            if (player.isPlaying()) {
+                player.pause();
+            } else {
+                player.play();
+            }
+        }
         if (id == R.id.exo_next) {
             try {
                 // Save playback state before releasing the player
@@ -319,97 +370,28 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             }
         }
         if (id == R.id.btnAudio) {
-            ArrayList<String> audioTrack = new ArrayList<>();
-            ArrayList<String> audioList = new ArrayList<>();
-            for (TracksInfo.TrackGroupInfo group : player.getCurrentTracksInfo().getTrackGroupInfos()) {
-                if (group.getTrackType() == C.TRACK_TYPE_AUDIO) {
-                    TrackGroup groupInfo = group.getTrackGroup();
-                    for (int i = 0; i < groupInfo.length; i++) {
-                        audioTrack.add(groupInfo.getFormat(i).language.toString());
-                        audioList.add(
-                                (audioList.size() + 1) + ". " +
-                                        new Locale(groupInfo.getFormat(i).language.toString()).getDisplayLanguage()
-                        );
-                    }
-                }
-            }
 
-            if (audioList.get(0).contains("null")) {
-                audioList.set(0, "1. Default Track");
-            }
+            TrackSelectionDialogBuilder dialogBuilder = new TrackSelectionDialogBuilder(
+                    this,
+                    "Select Audio",
+                    player,
+                    C.TRACK_TYPE_AUDIO);
 
-            CharSequence[] tempTracks = audioList.toArray(new CharSequence[audioList.size()]);
-            AlertDialog audioDialog = new MaterialAlertDialogBuilder(this)
-                    .setTitle("Select Language")
-                    .setPositiveButton("Off Audio", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            trackSelector.setParameters(
-                                    trackSelector.buildUponParameters().setRendererDisabled(
-                                            C.TRACK_TYPE_AUDIO, true
-                                    )
-                            );
-                            dialog.dismiss();
-                        }
-                    })
-                    .setItems(tempTracks, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int position) {
-                            Snackbar.make(view, audioList.get(position) + " Selected", 3000).show();
-                            trackSelector.setParameters(
-                                    trackSelector.buildUponParameters()
-                                            .setRendererDisabled(C.TRACK_TYPE_AUDIO, false)
-                                            .setPreferredAudioLanguage(audioTrack.get(position))
-                            );
-                        }
-                    })
-                    .create();
-            audioDialog.show();
+            dialogBuilder.build().show();
+
+            Snackbar.make(view, "Long press to disable audio.", 2500).show();
         }
         if (id == R.id.btnCaption) {
-            ArrayList<String> subtitles = new ArrayList<>();
-            ArrayList<String> subtitlesList = new ArrayList<>();
-            for (TracksInfo.TrackGroupInfo group : player.getCurrentTracksInfo().getTrackGroupInfos()) {
-                if (group.getTrackType() == C.TRACK_TYPE_TEXT) {
-                    TrackGroup groupInfo = group.getTrackGroup();
-                    for (int i = 0; i < groupInfo.length; i++) {
-                        subtitles.add(groupInfo.getFormat(i).language.toString());
-                        subtitlesList.add(
-                                (subtitlesList.size() + 1) + ". " +
-                                        new Locale(groupInfo.getFormat(i).language.toString()).getDisplayLanguage()
-                        );
-                    }
-                }
-            }
 
-            CharSequence[] tempTracks = subtitlesList.toArray(new CharSequence[subtitlesList.size()]);
-            AlertDialog sDialog = new MaterialAlertDialogBuilder(this)
-                    .setTitle("Select Subtitles")
-                    .setPositiveButton("Off Subtitles", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            trackSelector.setParameters(
-                                    trackSelector.buildUponParameters().setRendererDisabled(
-                                            C.TRACK_TYPE_VIDEO, true
-                                    )
-                            );
-                            dialog.dismiss();
-                        }
-                    })
-                    .setItems(tempTracks, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int position) {
-                            Snackbar.make(view, subtitlesList.get(position) + " Selected", 3000).show();
-                            trackSelector.setParameters(
-                                    trackSelector.buildUponParameters()
-                                            .setRendererDisabled(C.TRACK_TYPE_VIDEO, false)
-                                            .setPreferredTextLanguage(subtitles.get(position))
-                            );
-                        }
-                    })
-                    .create();
-            sDialog.show();
+            TrackSelectionDialogBuilder dialogBuilder = new TrackSelectionDialogBuilder(
+                    this,
+                    "Select Subtitle",
+                    player,
+                    C.TRACK_TYPE_TEXT);
 
+            dialogBuilder.build().show();
+
+            Snackbar.make(view, "Long press to disable audio.", 2500).show();
         }
     }
 

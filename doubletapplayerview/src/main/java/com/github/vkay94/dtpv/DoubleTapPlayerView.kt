@@ -10,7 +10,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.view.GestureDetectorCompat
-import com.google.android.exoplayer2.ui.PlayerView
+import androidx.media3.ui.PlayerView
 
 /**
  * Custom player class for Double-Tapping listening
@@ -32,7 +32,7 @@ open class DoubleTapPlayerView @JvmOverloads constructor(
     private var controllerRef: Int = -1
 
     init {
-        gestureDetector = GestureDetectorCompat(context, gestureListener)
+        gestureDetector = GestureDetectorCompat(getContext(), gestureListener)
 
         // Check whether controller is set through XML
         attrs?.let {
