@@ -9,8 +9,8 @@ import android.util.Rational;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import androidx.media3.common.Format;
 import com.github.vkay94.dtpv.DoubleTapPlayerView;
-import com.google.android.exoplayer2.Format;
 
 public class Utils {
 

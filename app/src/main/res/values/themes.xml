@@ -11,9 +11,14 @@
 
     <style name="Theme.VideoPlayer" parent="Base.Theme.VideoPlayer"/>
 
-<!--    <style name="alertDialog" parent="Theme.AppCompat.Dialog.Alert">-->
-<!--        <item name="android:textColor">@color/white</item>-->
-<!--    </style>-->
+    <style name="RoundShapeTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="shapeAppearanceMediumComponent">@style/RoundShapeAppearance</item>
+    </style>
+
+    <style name="RoundShapeAppearance" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">18dp</item>
+    </style>
 
     <style name="CustomShapeNeumorphCard">
         <item name="neumorph_cornerFamily">rounded</item>
